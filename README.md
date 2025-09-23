@@ -1,9 +1,9 @@
 # 📝 Proyecto-Intermodular-DAW2
 
-````
+
 * 👩‍🏫 Docente: Inma Gijón
 * 🗓️ Año: 2025-2026
-```
+
 
 ## 💭 Historias de usuario
 
