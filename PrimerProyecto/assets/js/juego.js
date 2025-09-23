@@ -4,7 +4,7 @@
  * 
  */
 const NMOVIES = 5
-const NELEMENTSPMOVIE = 3
+const NELEMENTSPMOVIE = 2
 const getMoviesDeck = () => {
   newGameButton.textContent = 'Empezar Juego'
   let movieDeck = []
@@ -49,6 +49,8 @@ const getCard = (deck) => {
 const newGameButton = document.getElementById('newGame')
 const movieContainer = document.getElementById('pelicula-caratula')
 const guessContainer = document.getElementById('adivinadas')
+const elementsButton = document.getElementById('guessButton')
+const elementsContainer = document.getElementById('elementos-pelicula')
 
 // Función para generar una nueva película o reiniciar las imagenes
 const newGame = () => {
@@ -72,9 +74,24 @@ const newGame = () => {
 
 }
 
+const addCharacter = () => {
+
+  let character = getCard(elementDeck)
+  console.log(character)
+  if (!character) {
+    console.log('reinicio')
+    elementDeck = getElementsDeck()
+    addCharacter()
+    return
+  }
+
+  elementsContainer.innerHTML += `<div class="elemento superpuesto"><img class="recurso" src="./assets/characters/${character}.jpg" alt=""></div>`
+
+}
 
 let movieDeck = getMoviesDeck()
 let elementDeck = getElementsDeck()
 
 
 newGameButton.addEventListener('click', newGame)
+elementsButton.addEventListener('click', addCharacter)
