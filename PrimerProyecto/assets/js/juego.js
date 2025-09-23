@@ -48,10 +48,12 @@ const getCard = (deck) => {
 
 const newGameButton = document.getElementById('newGame')
 const movieContainer = document.getElementById('pelicula-caratula')
+const guessContainer = document.getElementById('adivinadas')
 
 // Función para generar una nueva película o reiniciar las imagenes
 const newGame = () => {
-  newGameButton.textContent = 'Siguiente Pelicula'
+
+  
 
   let movie = getCard(movieDeck)
 
@@ -61,8 +63,12 @@ const newGame = () => {
     newGame()
     return
   }
-
+  newGameButton.textContent = 'Siguiente Pelicula'
   movieContainer.innerHTML = `<img class="elemento" src="assets/movies/${movie}.jpg" alt="">`
+
+  guessContainer.innerHTML = '<div class="elemento"></div>'
+  guessContainer.innerHTML += '<div class="elemento"></div>'
+  guessContainer.innerHTML += '<div class="elemento"></div>'
 
 }
 
