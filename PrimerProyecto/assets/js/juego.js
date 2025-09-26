@@ -68,7 +68,7 @@ const newGame = () => {
   newGameButton.textContent = 'Siguiente Pelicula'
   movieContainer.innerHTML = `<img class="elemento" src="assets/movies/${movie}.jpg" alt="">`
 
-  guessContainer.innerHTML = '<div class="elemento"></div>'
+  guessContainer.innerHTML = '<div class="elemento drop-zone"></div>'
   guessContainer.innerHTML += '<div class="elemento"></div>'
   guessContainer.innerHTML += '<div class="elemento"></div>'
 
@@ -77,7 +77,6 @@ const newGame = () => {
 const addCharacter = () => {
 
   let character = getCard(elementDeck)
-  console.log(character)
   if (!character) {
     console.log('reinicio')
     elementDeck = getElementsDeck()
@@ -85,7 +84,17 @@ const addCharacter = () => {
     return
   }
 
-  elementsContainer.innerHTML += `<div class="elemento superpuesto"><img class="recurso" src="./assets/characters/${character}.jpg" alt=""></div>`
+  let div = document.createElement('div')
+  div.className = 'elemento superpuesto'
+  div.setAttribute('draggable', 'true')
+  div.innerHTML = `<img class="recurso" src="./assets/characters/${character}.jpg" alt="">`
+
+  // Manejador de cuando se pincha para empezar a arrastrar
+  div.addEventListener('dragstart', (ev) => {
+    console.log('buenas noches')
+  })
+
+  elementsContainer.appendChild(div)
 
 }
 
@@ -95,3 +104,4 @@ let elementDeck = getElementsDeck()
 
 newGameButton.addEventListener('click', newGame)
 elementsButton.addEventListener('click', addCharacter)
+
