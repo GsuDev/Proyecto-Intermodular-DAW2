@@ -4,7 +4,7 @@
  * 
  */
 const NMOVIES = 5
-const NELEMENTSPMOVIE = 2
+const NELEMENTSPMOVIE = 3
 const getMoviesDeck = () => {
   newGameButton.textContent = 'Empezar Juego'
   let movieDeck = []
@@ -20,7 +20,7 @@ const getMoviesDeck = () => {
 const getElementsDeck = () => {
   let elementDeck = []
   for (let i = 1; i <= NMOVIES; i++) {
-    for (let j = 1; j <= NELEMENTSPMOVIE; j++) {
+    for (let j = 0; j < NELEMENTSPMOVIE; j++) {
       elementDeck.push("0" + i + "C" + j)
     }
   }
@@ -36,11 +36,8 @@ const getCard = (deck) => {
     return undefined
   }
 
-  // Genera un indice de la baraja aleatorio
-  const randomIndex = Math.floor(Math.random() * deck.lenght)
-
   // Quita la carta de la baraja y la guarda en la variable
-  const picked = deck.splice(randomIndex, 1)[0]
+  const picked = deck.pop()
 
   // Devuelve la carta seleccionada
   return picked
@@ -52,12 +49,17 @@ const guessContainer = document.getElementById('adivinadas')
 const elementsButton = document.getElementById('guessButton')
 const elementsContainer = document.getElementById('elementos-pelicula')
 let dragged
+let tries = 10
+let hits = 0
+const triesMarker = document.getElementById('intentos')
 
 // Función para generar una nueva película o reiniciar las imagenes
 const newGame = () => {
+
   let movie = getCard(movieDeck)
   elementsContainer.innerHTML = ''
   elementDeck = getElementsDeck()
+  console.log(elementDeck)
 
   if (!movie) {
     console.log('reinicio')
@@ -73,32 +75,52 @@ const newGame = () => {
   for (let i = 0; i < 3; i++) {
     let div = document.createElement('div')
     div.className = 'elemento drop-zone'
+    // div.setAttribute('draggable') = 'false'
 
     div.addEventListener('dragover', e => e.preventDefault()) // Necesario
-      div.addEventListener('drop', e => {
-        e.preventDefault()
-        if (movie.slice(0, 2) === dragged.id.slice(0, 2)) {
-          dragged.className = 'elemento'
-          div.outerHTML = dragged.outerHTML
-          elementsContainer.removeChild(dragged)
+    div.addEventListener('drop', e => {
+      e.preventDefault()
+      if (movie.slice(0, 2) === dragged.id.slice(0, 2)) {
+        dragged.className = 'elemento'
+
+        div.outerHTML = dragged.outerHTML
+        elementsContainer.removeChild(dragged)
+        hits++
+        dragged.setAttribute('draggable') = 'false'
+
+        if (hits >= 3) {
+          setTimeout(() => { alert("Has ganado") }, 100)
+
+          elementDeck = []
+          elementsContainer.innerHTML = ''
+
         }
-        
-      })
+
+      } else {
+
+        triesMarker.innerHTML = --tries
+        if (tries < 1) {
+          setTimeout(() => { alert("Has perdido") }, 100)
+
+          elementDeck = []
+          elementsContainer.innerHTML = ''
+        }
+      }
+
+    })
 
     guessContainer.appendChild(div)
   }
 
 
-  
+
 }
 
 const addCharacter = () => {
 
   let character = getCard(elementDeck)
   if (!character) {
-    console.log('reinicio')
-    elementDeck = getElementsDeck()
-    addCharacter()
+    console.log('Se acabó el deck de personajes')
     return
   }
 
