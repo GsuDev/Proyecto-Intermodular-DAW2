@@ -32,7 +32,7 @@ const getElementsDeck = () => {
 // Escoge una carta, la quita de la baraja y la devuelve
 const getCard = (deck) => {
   // Si la baraja está vacía no devuelve nada
-  if (deck.lenght == 0) {
+  if (deck.length === 0) {
     return undefined
   }
 
@@ -51,15 +51,15 @@ const movieContainer = document.getElementById('pelicula-caratula')
 const guessContainer = document.getElementById('adivinadas')
 const elementsButton = document.getElementById('guessButton')
 const elementsContainer = document.getElementById('elementos-pelicula')
+let dragged
 
 // Función para generar una nueva película o reiniciar las imagenes
 const newGame = () => {
-
-  
-
   let movie = getCard(movieDeck)
+  elementsContainer.innerHTML = ''
+  elementDeck = getElementsDeck()
 
-  if (!movie){
+  if (!movie) {
     console.log('reinicio')
     movieDeck = getMoviesDeck()
     newGame()
@@ -68,10 +68,28 @@ const newGame = () => {
   newGameButton.textContent = 'Siguiente Pelicula'
   movieContainer.innerHTML = `<img class="elemento" src="assets/movies/${movie}.jpg" alt="">`
 
-  guessContainer.innerHTML = '<div class="elemento drop-zone"></div>'
-  guessContainer.innerHTML += '<div class="elemento"></div>'
-  guessContainer.innerHTML += '<div class="elemento"></div>'
+  guessContainer.innerHTML = ''
 
+  for (let i = 0; i < 3; i++) {
+    let div = document.createElement('div')
+    div.className = 'elemento drop-zone'
+
+    div.addEventListener('dragover', e => e.preventDefault()) // Necesario
+      div.addEventListener('drop', e => {
+        e.preventDefault()
+        if (movie.slice(0, 2) === dragged.id.slice(0, 2)) {
+          dragged.className = 'elemento'
+          div.outerHTML = dragged.outerHTML
+          elementsContainer.removeChild(dragged)
+        }
+        
+      })
+
+    guessContainer.appendChild(div)
+  }
+
+
+  
 }
 
 const addCharacter = () => {
@@ -87,12 +105,15 @@ const addCharacter = () => {
   let div = document.createElement('div')
   div.className = 'elemento superpuesto'
   div.setAttribute('draggable', 'true')
-  div.innerHTML = `<img class="recurso" src="./assets/characters/${character}.jpg" alt="">`
+  div.id = character
+  div.innerHTML = `<img class="recurso" src="./assets/characters/${character}.jpg" alt="" draggable="false">`
 
   // Manejador de cuando se pincha para empezar a arrastrar
   div.addEventListener('dragstart', (ev) => {
-    console.log('buenas noches')
+    console.log(`Empieza a arrastrarse ${character}`)
+    dragged = ev.target
   })
+
 
   elementsContainer.appendChild(div)
 
