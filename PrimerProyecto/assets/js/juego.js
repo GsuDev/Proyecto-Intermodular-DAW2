@@ -55,6 +55,9 @@ const triesMarker = document.getElementById('intentos')
 
 // Función para generar una nueva película o reiniciar las imagenes
 const newGame = () => {
+  tries = 10
+  triesMarker.innerHTML = tries
+  hits = 0
 
   let movie = getCard(movieDeck)
   elementsContainer.innerHTML = ''
@@ -85,17 +88,16 @@ const newGame = () => {
 
         div.outerHTML = dragged.outerHTML
         elementsContainer.removeChild(dragged)
-        hits++
-        dragged.setAttribute('draggable') = 'false'
 
-        if (hits >= 3) {
+        if (++hits >= 3) {
+          
           setTimeout(() => { alert("Has ganado") }, 100)
 
           elementDeck = []
           elementsContainer.innerHTML = ''
 
         }
-
+        console.log('aciertos ',hits)
       } else {
 
         triesMarker.innerHTML = --tries
