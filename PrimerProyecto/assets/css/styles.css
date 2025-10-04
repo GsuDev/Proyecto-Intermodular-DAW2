@@ -24,7 +24,6 @@ html, body {
     width: 210px;
     height: 310px;
     left: 100px;
-    margin-left: -35px;
     float:left;
     display: flex;
     align-items: center;
@@ -34,6 +33,11 @@ html, body {
     border-radius: 10px;
     border-style: solid;
 }
+
+.superpuesto {
+  margin-left: -35px;
+}
+
 
 .recurso {
     width: 200px;
